@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-namespace Com.MyCompany.MyGame{
+
 
 
     public class Launcher : MonoBehaviourPunCallbacks
@@ -25,18 +25,29 @@ namespace Com.MyCompany.MyGame{
 
         bool isConnected;
 
+        [SerializeField]
+        private GameObject ChatRoom;
+
+        public static Launcher instance;
 
 
-
+        public void backToControlPanal()
+        {
+            //ChatRoom.SetActive(false);
+            proceslabel.SetActive(false);
+            controlPanal.SetActive(true);
+        }
         private void Awake()
         {
-
+            instance = this;
             // this makes sure when you call photonnetwork.loadlevel() on the master client and all clients in the same room is sync their levels
             PhotonNetwork.AutomaticallySyncScene = true;
+            
         }
 
         private void Start()
         {
+            //ChatRoom.SetActive(false);
             proceslabel.SetActive(false);
             controlPanal.SetActive(true);
         }
@@ -83,6 +94,7 @@ namespace Com.MyCompany.MyGame{
         {
             proceslabel.SetActive(false);
             controlPanal.SetActive(true);
+            //ChatRoom.SetActive(false);
             isConnected = false;
 
             Debug.Log("Disconected Because" + cause);   
@@ -100,11 +112,19 @@ namespace Com.MyCompany.MyGame{
         {
             if(PhotonNetwork.CurrentRoom.PlayerCount ==1)
             {
-                Debug.Log("we load the room for 1");
-
-                PhotonNetwork.LoadLevel("Room for 1");
+                proceslabel.SetActive(false);
+                //ChatRoom.SetActive(true);
+                PhotonNetwork.LoadLevel(1);
+                //PhotonNetwork.LoadLevel("Room for 1");
+            }
+        }
+        public void StartGame()
+        {
+            if(PhotonNetwork.CurrentRoom.PlayerCount == 1 )
+            {
+                PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
             }
         }
 
     }
-}
+
