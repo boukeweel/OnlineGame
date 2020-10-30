@@ -10,11 +10,13 @@ public class GameManger : MonoBehaviourPunCallbacks
 {
     public override void OnLeftRoom()
     {
+        PhotonNetwork.Disconnect();
         SceneManager.LoadScene(0);
     }
 
     public void LeaveRoom()
     {
+
         PhotonNetwork.LeaveRoom();
     }
 

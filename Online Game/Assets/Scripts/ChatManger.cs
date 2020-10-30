@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class ChatManger : MonoBehaviourPunCallbacks
 {
+    // ik heb hier een deel van kelvin gehad omdat ik het in de les had gemist en hem had gevraagt hoe ik het moest doen
+
     public TMP_Text chatBox;
     public TMP_InputField inputField;
 
@@ -25,16 +27,19 @@ public class ChatManger : MonoBehaviourPunCallbacks
     {
         chatBox.text = "";
         inputField.text = "";
-        PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
+        PhotonNetwork.Instantiate("Chatter", Vector3.zero, Quaternion.identity);
         
     }
     public override void OnLeftRoom()
     {
+        
         SceneManager.LoadScene(0);
     }
     public void LeaveRoom()
     {
+        PhotonNetwork.Disconnect();
         PhotonNetwork.LeaveRoom();
+        SceneManager.LoadScene(0);
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
@@ -54,7 +59,10 @@ public class ChatManger : MonoBehaviourPunCallbacks
 
     public void start()
     {
-        Launcher.instance.StartGame();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel(2);
+        }
     }
 
 }

@@ -120,7 +120,7 @@ using Photon.Realtime;
         }
         public void StartGame()
         {
-            if(PhotonNetwork.CurrentRoom.PlayerCount == 1 )
+            if(PhotonNetwork.CurrentRoom.PlayerCount == 1 && PhotonNetwork.IsMasterClient)
             {
                 PhotonNetwork.LoadLevel("Room for " + PhotonNetwork.CurrentRoom.PlayerCount);
             }
